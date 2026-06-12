@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#0b0820" />
+  <meta name="description" content="Lumina Oracle — pull your daily oracle card, set intentions, journal your reflections, and follow the moon." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Lumina" />
+  <title>Lumina Oracle · Daily Card</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="stars" aria-hidden="true"></div>
+  <div class="nebula nebula-1" aria-hidden="true"></div>
+  <div class="nebula nebula-2" aria-hidden="true"></div>
+
+  <!-- ───────── Onboarding ───────── -->
+  <div id="onboarding" class="onboarding hidden">
+    <div class="onboarding-inner">
+      <div class="onboard-glyph">🔮</div>
+      <h1 class="brand">Lumina Oracle</h1>
+      <p class="onboard-text">
+        Oracle decks are intuitive companions — each morning, one of 44 cards
+        is drawn just for you, carrying a message, an affirmation, and a
+        question to sit with. Your card is woven from your name and the day
+        itself, and it stays with you until midnight.
+      </p>
+      <label class="onboard-label" for="name-input">What shall the cards call you?</label>
+      <input id="name-input" class="text-input" type="text" maxlength="24" placeholder="Your name (optional)" autocomplete="given-name" />
+      <button id="begin-btn" class="btn btn-gold">Begin your journey ✦</button>
+    </div>
+  </div>
+
+  <!-- ───────── App ───────── -->
+  <main id="app" class="app hidden">
+
+    <!-- Today -->
+    <section id="view-today" class="view active">
+      <header class="today-header">
+        <div>
+          <p id="greeting" class="greeting">Good evening</p>
+          <p id="today-date" class="date-line"></p>
+        </div>
+        <button id="moon-chip" class="moon-chip" title="Moon phase"></button>
+      </header>
+
+      <div id="intention-block" class="intention-block">
+        <label for="intention-input" class="intention-label">Set an intention for today</label>
+        <div class="intention-row">
+          <input id="intention-input" class="text-input" type="text" maxlength="120" placeholder="Today, I invite…" />
+          <button id="intention-save" class="btn-icon" title="Save intention">✦</button>
+        </div>
+        <p id="intention-display" class="intention-display hidden"></p>
+      </div>
+
+      <p id="reveal-hint" class="reveal-hint">Take a breath, then tap the card to reveal today’s message</p>
+
+      <div class="card-stage">
+        <div id="daily-card" class="oracle-card" role="button" tabindex="0" aria-label="Tap to reveal your daily oracle card">
+          <div class="card-face card-back">
+            <div class="card-back-art">
+              <div class="back-ring"></div>
+              <div class="back-moon">☾</div>
+              <div class="back-star s1">✦</div>
+              <div class="back-star s2">✧</div>
+              <div class="back-star s3">✦</div>
+              <div class="back-star s4">✧</div>
+              <p class="back-title">LUMINA</p>
+            </div>
+          </div>
+          <div class="card-face card-front">
+            <div class="card-front-inner">
+              <p class="card-element"></p>
+              <div class="card-glyph"></div>
+              <h2 class="card-name"></h2>
+              <div class="card-divider">✦ ✦ ✦</div>
+              <p class="card-keywords"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="reading" class="reading hidden">
+        <div class="panel">
+          <h3 class="panel-title">✶ Today’s message</h3>
+          <p id="card-message"></p>
+        </div>
+        <div class="panel panel-shadow">
+          <h3 class="panel-title">☾ Shadow whisper</h3>
+          <p id="card-shadow"></p>
+        </div>
+        <div class="affirmation-block">
+          <p class="affirmation-label">Daily affirmation</p>
+          <p id="card-affirmation" class="affirmation-text"></p>
+        </div>
+        <div class="panel">
+          <h3 class="panel-title">✎ Journal prompt</h3>
+          <p id="card-prompt" class="prompt-text"></p>
+          <textarea id="reflection-input" class="text-area" rows="4" placeholder="Write your reflection…"></textarea>
+          <button id="reflection-save" class="btn btn-soft">Save reflection</button>
+          <p id="reflection-saved" class="saved-note hidden">Saved to your journal ✦</p>
+        </div>
+        <div class="action-row">
+          <button id="clarity-btn" class="btn btn-outline">☽ Pull a clarity card</button>
+          <button id="share-btn" class="btn btn-outline">↗ Share</button>
+        </div>
+        <div id="clarity-result" class="clarity-result hidden"></div>
+      </div>
+    </section>
+
+    <!-- Deck -->
+    <section id="view-deck" class="view">
+      <h2 class="view-title">The Deck</h2>
+      <p class="view-sub">44 cards · five elements · explore their meanings</p>
+      <div id="element-filters" class="chip-row"></div>
+      <div id="deck-grid" class="deck-grid"></div>
+    </section>
+
+    <!-- Journal -->
+    <section id="view-journal" class="view">
+      <h2 class="view-title">Your Journal</h2>
+      <div class="streak-row">
+        <div class="streak-box"><span id="streak-count">0</span><label>day streak</label></div>
+        <div class="streak-box"><span id="total-pulls">0</span><label>cards pulled</label></div>
+        <div class="streak-box"><span id="total-notes">0</span><label>reflections</label></div>
+      </div>
+      <div id="journal-list" class="journal-list"></div>
+    </section>
+
+    <!-- Moon / You -->
+    <section id="view-moon" class="view">
+      <h2 class="view-title">Moon &amp; You</h2>
+      <div class="moon-hero">
+        <div id="moon-big" class="moon-big">🌕</div>
+        <p id="moon-name" class="moon-name"></p>
+        <p id="moon-guidance" class="moon-guidance"></p>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">⚙ Settings</h3>
+        <label class="onboard-label" for="settings-name">Your name</label>
+        <div class="intention-row">
+          <input id="settings-name" class="text-input" type="text" maxlength="24" />
+          <button id="settings-name-save" class="btn-icon" title="Save name">✦</button>
+        </div>
+        <button id="reset-btn" class="btn btn-danger">Reset all data</button>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title">☆ About oracle decks</h3>
+        <p class="about-text">
+          Unlike tarot’s fixed 78-card structure, oracle decks are free-form —
+          each deck carries its own theme, artwork, and voice. Readers pull a
+          card to set the tone of the day, find language for what they’re
+          feeling, or sit with a question. There is no “bad” card: every
+          message, even a shadow, is an invitation inward. Lumina’s 44 cards
+          move through fire, water, air, earth, and spirit.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Card detail modal -->
+  <div id="card-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button id="modal-close" class="modal-close" aria-label="Close">✕</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Bottom navigation -->
+  <nav class="bottom-nav" aria-label="Main">
+    <button class="nav-btn active" data-view="today"><span class="nav-ico">🔮</span><span>Today</span></button>
+    <button class="nav-btn" data-view="deck"><span class="nav-ico">🃏</span><span>Deck</span></button>
+    <button class="nav-btn" data-view="journal"><span class="nav-ico">📖</span><span>Journal</span></button>
+    <button class="nav-btn" data-view="moon"><span class="nav-ico">☾</span><span>Moon</span></button>
+  </nav>
+
+  <script src="js/deck.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
