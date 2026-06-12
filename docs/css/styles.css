@@ -239,23 +239,19 @@ body {
 .back-star.s4 { bottom: 16%; right: 20%; font-size: 0.95rem; animation-delay: 2.3s; }
 
 .card-front { transform: rotateY(180deg); display: flex; }
-.card-front::after {
-  content: '';
-  position: absolute; inset: 9px;
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  pointer-events: none;
+.card-front svg, .deck-tile svg, .modal-art svg { display: block; width: 100%; height: 100%; }
+
+/* custom painted/AI artwork override (see js/art.js · CUSTOM_ART) */
+.custom-art { position: relative; width: 100%; height: 100%; }
+.custom-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.custom-art-label {
+  position: absolute; inset: auto 0 0 0;
+  padding: 46px 14px 18px;
+  text-align: center;
+  background: linear-gradient(to top, rgba(8, 5, 22, 0.85), transparent);
 }
-.card-front-inner {
-  flex: 1;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 26px 18px; gap: 8px;
-}
-.card-element { font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255, 255, 255, 0.85); }
-.card-glyph { font-size: 4.2rem; margin: 8px 0; filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.45)); }
-.card-name { font-family: var(--serif); font-weight: 500; font-size: 1.75rem; line-height: 1.12; color: #fff; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45); }
-.card-divider { color: rgba(255, 255, 255, 0.75); font-size: 0.65rem; letter-spacing: 0.4em; margin: 6px 0 2px; }
-.card-keywords { font-style: italic; font-family: var(--serif); font-size: 1.02rem; color: rgba(255, 255, 255, 0.92); }
+.custom-art .ca-name { font-family: var(--serif); font-weight: 500; font-size: 1.5rem; color: #f6ead0; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6); }
+.custom-art .ca-keywords { font-family: var(--serif); font-style: italic; font-size: 0.88rem; color: rgba(246, 234, 208, 0.8); }
 
 /* glow once revealed */
 .oracle-card.flipped .card-front { animation: reveal-glow 2.2s ease 0.55s both; }
@@ -315,17 +311,14 @@ body {
 .chip.active { border-color: var(--gold); color: var(--gold-soft); background: rgba(232, 196, 111, 0.12); }
 .deck-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .deck-tile {
-  aspect-ratio: 5 / 7;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 6px; padding: 8px; text-align: center;
+  aspect-ratio: 5 / 8;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.25s;
 }
 .deck-tile:active { transform: scale(0.95); }
-.deck-tile .tile-glyph { font-size: 1.9rem; }
-.deck-tile .tile-name { font-family: var(--serif); font-size: 0.86rem; line-height: 1.15; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.5); }
 
 /* ── Journal ── */
 .streak-row { display: flex; gap: 10px; margin-bottom: 20px; }
@@ -380,7 +373,14 @@ body {
   background: var(--glass); color: var(--ink-dim);
   cursor: pointer; font-size: 0.9rem;
 }
-.modal-glyph { font-size: 3.4rem; text-align: center; }
+.modal-art {
+  width: min(56%, 200px);
+  aspect-ratio: 5 / 8;
+  margin: 4px auto 12px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(232, 196, 111, 0.3);
+}
 .modal-name { font-family: var(--serif); font-weight: 500; font-size: 1.8rem; text-align: center; margin: 6px 0 2px; }
 .modal-element { text-align: center; font-size: 0.74rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 14px; }
 .modal-section { margin-top: 14px; }

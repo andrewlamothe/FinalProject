@@ -123,13 +123,7 @@
   };
 
   const fillCardFront = (cardEl, card) => {
-    const el = ELEMENTS[card.element];
-    const front = cardEl.querySelector('.card-front');
-    front.style.background = el.hue;
-    cardEl.querySelector('.card-element').textContent = `${el.glyph} ${el.label}`;
-    cardEl.querySelector('.card-glyph').textContent = card.glyph;
-    cardEl.querySelector('.card-name').textContent = card.name;
-    cardEl.querySelector('.card-keywords').textContent = card.keywords.join(' · ');
+    cardEl.querySelector('.card-front').innerHTML = cardFaceHTML(card);
   };
 
   const revealCard = (card, animate = true) => {
@@ -239,8 +233,7 @@
     DECK.filter((c) => deckFilter === 'all' || c.element === deckFilter).forEach((card) => {
       const tile = document.createElement('div');
       tile.className = 'deck-tile';
-      tile.style.background = ELEMENTS[card.element].hue;
-      tile.innerHTML = `<div class="tile-glyph">${card.glyph}</div><div class="tile-name">${card.name}</div>`;
+      tile.innerHTML = cardFaceHTML(card, { compact: true });
       tile.addEventListener('click', () => openCardModal(card));
       grid.appendChild(tile);
     });
@@ -250,8 +243,7 @@
     const el = ELEMENTS[card.element];
     $('#modal-body').innerHTML = `
       ${dateLabel ? `<p class="modal-element">${dateLabel}</p>` : ''}
-      <div class="modal-glyph">${card.glyph}</div>
-      <h3 class="modal-name">${card.name}</h3>
+      <div class="modal-art">${cardFaceHTML(card)}</div>
       <p class="modal-element">${el.glyph} ${el.label} · ${card.keywords.join(' · ')}</p>
       <div class="modal-section"><h4>✶ Message</h4><p>${card.message}</p></div>
       <div class="modal-section"><h4>☾ Shadow whisper</h4><p>${card.shadow}</p></div>

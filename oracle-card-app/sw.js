@@ -1,10 +1,11 @@
 /* Lumina Oracle service worker — cache-first app shell for offline use. */
-const CACHE = 'lumina-v1';
+const CACHE = 'lumina-v2';
 const SHELL = [
   './',
   './index.html',
   './css/styles.css',
   './js/deck.js',
+  './js/art.js',
   './js/app.js',
   './manifest.webmanifest',
   './icons/icon.svg',
